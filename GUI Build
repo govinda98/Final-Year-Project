@@ -1,0 +1,8 @@
+from guizero import App, Text
+app = App(title="Test Ui")
+//app.display()
+welcome_message = Text(app, text="Welcome to the Assistive Communication Application", size=40, font="Times New Roman", color="lightblue")
+instructions = Text(app, text="Click the button below to begin", size=27, font="Times New Roman", color="#000000")
+def run_script():
+    welcome_message.value = camera_script.value
+update_text = PushButton(app, command=...)
