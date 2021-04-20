@@ -10,3 +10,4 @@ $ sudo apt-get upgrade
 //Install pip
 $ sudo apt install python3-pip
 //Run MediaPipe_install.py
+g
