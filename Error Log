@@ -1,0 +1,27 @@
+//In MediaPipe install before compiling, error 'java heap space out of mem'
+$ export BAZEL_JAVAC_OPTS="-J-Xmx800m -J-Xms800m" //set max amt of memory to 800mb while building Bazel
+-------------------
+//jdk header missing error, navigate to >>/home/pi/bazel/src/main/java/com/google/devtools/build/lib/syntax/BUILD:150:1 
+//Add section to the end of file
+cc_library(
+    name = "jni",
+    hdrs = ["@bazel_tools//tools/jdk:jni_header"] + select({
+        "//src/conditions:linux_x86_64": ["@bazel_tools//tools/jdk:jni_md_header-linux"],
+        "//src/conditions:darwin": ["@bazel_tools//tools/jdk:jni_md_header-darwin"],
+        "//src/conditions:freebsd": ["@bazel_tools//tools/jdk:jni_md_header-freebsd"],
+        "//src/conditions:openbsd": ["@bazel_tools//tools/jdk:jni_md_header-openbsd"],
+        "//src/conditions:windows": ["@bazel_tools//tools/jdk:jni_md_header-windows"],
+	      "//src/conditions:arm": ["@bazel_tools//tools/jdk:jni_md_header-linux"],
+        "//conditions:default": ["@bazel_tools//tools/jdk:jni_md_header-linux"],
+    }),
+    includes = ["../../../../../../../../../external/bazel_tools/tools/jdk/include"] + select({
+        "//src/conditions:linux_x86_64": ["../../../../../../../../../external/bazel_tools/tools/jdk/include/linux"],
+        "//src/conditions:darwin": ["../../../../../../../../../external/bazel_tools/tools/jdk/include/darwin"],
+        "//src/conditions:freebsd": ["../../../../../../../../../external/bazel_tools/tools/jdk/include/freebsd"],
+        "//src/conditions:openbsd": ["../../../../../../../../../external/bazel_tools/tools/jdk/include/openbsd"],
+        "//src/conditions:windows": ["../../../../../../../../../external/bazel_tools/tools/jdk/include/win32"],
+	"//src/conditions:arm": ["../../../../../../../../../external/bazel_tools/tools/jdk/include/linux"],
+        "//conditions:default": ["../../../../../../../../../external/bazel_tools/tools/jdk/include/linux"],
+    }),
+)
+//most important line, @bazel_tools//tools/jdk:jni_md_header-linux"
